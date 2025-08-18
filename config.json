@@ -1,0 +1,14 @@
+{
+
+  "fastp": "/path/to/fastp",
+  "seqtk": "/path/to/seqtk",
+  "bwa": "/path/to/bwa",
+  "picard": "/path/to/picard.jar",
+  "GATK4": "/path/to/gatk-package-4.2.0.0-local.jar",
+  "samtools": "/path/to/samtools",
+  "ref_ucsc": "/path/to/human_g1k_v37_decoy.fasta",
+  "ref_fai": "/path/to/human_g1k_v37_decoy.fasta.fai",
+  "samclip": "/path/to/samclip"
+
+}
+
