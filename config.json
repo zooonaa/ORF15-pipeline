@@ -1,11 +1,11 @@
 {
 
-  "fastp": "/path/to/fastp",
+  "fastp": "/path/to/fastp_v0.23.2/bin/fastp",
   "seqtk": "/path/to/seqtk",
-  "bwa": "/path/to/bwa",
-  "picard": "/path/to/picard.jar",
+  "bwa": "/path/to/BWA/BWA_v0.7.17/bwa",
+  "picard": "/path/to/Picard_v2.25.7/picard.jar",
   "GATK4": "/path/to/gatk-package-4.2.0.0-local.jar",
-  "samtools": "/path/to/samtools",
+  "samtools": "/path/to/SAMTOOLS/SAMTOOLS_v1.13/bin/samtools",
   "ref_ucsc": "/path/to/human_g1k_v37_decoy.fasta",
   "ref_fai": "/path/to/human_g1k_v37_decoy.fasta.fai",
   "samclip": "/path/to/samclip"
