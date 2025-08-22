@@ -2,20 +2,22 @@ import os
 import glob
 import pandas as pd
 
+base_dir = os.path.join(os.path.dirname(__file__), "run")  
+
 def summarize_variant_table(file_pattern: str, output_file: str):
     files = glob.glob(file_pattern)
     all_data = []
     all_samples = []
 
-    print(f"\n🔍 收集檔案：{file_pattern}")
+    print(f"\n Collecting {file_pattern}")
     if not files:
-        print("⚠️ 找不到任何 _variant.txt 檔案")
+        print("There's no _variant.txt file")
         return
 
     for file in files:
         sample = file.split("_")[0]
         all_samples.append(sample)
-        print(f"  📄 處理 sample: {sample}")
+        print(f"Processing sample: {sample}")
 
         try:
             df = pd.read_csv(file, sep="\t")
@@ -27,7 +29,6 @@ def summarize_variant_table(file_pattern: str, output_file: str):
                 df['Alt'].astype(str)
             )
 
-            # 根據 score 篩選
             df['het'] = pd.to_numeric(df['het'], errors='coerce')
             df['hom/hem'] = pd.to_numeric(df['hom/hem'], errors='coerce')
 
@@ -50,10 +51,10 @@ def summarize_variant_table(file_pattern: str, output_file: str):
                 all_data.append(df[['Variant', 'Sample', 'Result']])
 
         except Exception as e:
-            print(f"    ❌ 錯誤：{e}")
+            print(f"    FAIL{e}")
 
     if not all_data:
-        print("⚠️ 所有 sample 都沒有有效變異，未產出統整表")
+        print("NO Valid Variant")
         return
 
     merged = pd.concat(all_data)
@@ -75,7 +76,7 @@ def summarize_variant_table(file_pattern: str, output_file: str):
     matrix = matrix[['Chr', 'Pos', 'Ref', 'Alt'] + sample_cols]
 
     matrix.to_excel(output_file, index=False)
-    print(f"✅ 已輸出：{output_file}")
+    print(f"Output: {output_file}")
 
 # 執行範例
 summarize_variant_table("*_haplotypecaller_all_variant.txt", "HC_summary_matrix_from_variant_txt.xlsx")
