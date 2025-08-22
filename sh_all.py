@@ -33,16 +33,6 @@ samclip = os.path.join(config["samclip"])
 #fastq_dir = os.path.join(script_dir, config["fastq_dir"])
 #output_dir = os.path.join(script_dir, config["output_dir"])
 
-"""
-bwa="/opt/ohpc/Taiwania3/pkg/biology/BWA/BWA_v0.7.17/bwa"
-picard="/staging/reserve/paylong_ntu/AI_SHARE/software/Picard/Picard_v2.25.7/picard.jar"
-GATK4 ="/opt/ohpc/Taiwania3/pkg/biology/GATK/gatk_v4.2.0.0/gatk-package-4.2.0.0-local.jar"
-samtools="/opt/ohpc/Taiwania3/pkg/biology/SAMTOOLS/SAMTOOLS_v1.13/bin/samtools" #(has_newer_version)
-ref_ucsc="/staging/reserve/paylong_ntu/AI_SHARE/reference/GATK_bundle/2.8/b37/human_g1k_v37_decoy.fasta"
-ref_fai="/staging/reserve/paylong_ntu/AI_SHARE/reference/GATK_bundle/2.8/b37/human_g1k_v37_decoy.fasta.fai"
-samclip="/staging/biology/u6950519/samclip"
-"""
-
 jar = 'java  -Xmx80g -jar'; #40g/80g (V4_VERSION=80)
 python3="/bin/python3.6"
 #=============================================================#
