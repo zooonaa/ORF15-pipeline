@@ -78,6 +78,5 @@ def summarize_variant_table(file_pattern: str, output_file: str):
     matrix.to_excel(output_file, index=False)
     print(f"Output: {output_file}")
 
-# 執行範例
 summarize_variant_table("*_haplotypecaller_all_variant.txt", "HC_summary_matrix_from_variant_txt.xlsx")
 summarize_variant_table("*_mutect2_all_variant.txt", "M2_summary_matrix_from_variant_txt.xlsx")
