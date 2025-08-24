@@ -97,5 +97,6 @@ rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.sam
 rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_samclip_.sam
 rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.bam
 rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_fq.bam
+```
 
 Author: Chien-Yu, Lin
