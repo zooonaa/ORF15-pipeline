@@ -54,7 +54,7 @@ your_ORF15_path/
 sh ORF15_merged_fastq.sh 
 
 # Step 2: Main analysis pipeline
-python3 sh_all.py     # requires pandas
+python3 sh_all.py      # Scripts will automatically be submitted (sbatch) to the HPC cluster for execution
 
 # Step 3: Process VCF file
 python3 vcf_1.py 
