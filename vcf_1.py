@@ -2,14 +2,9 @@ import os
 import gzip
 import time
 
-# 把全部批次的結果merge在一起。
-
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 path1 = os.path.join(script_dir, "run/")
-
-output_folder = path1 + "output"
-os.makedirs(output_folder, exist_ok=True)
 
 
 log_file_path = os.path.join(path1, "progress.log")
@@ -139,111 +134,3 @@ process_percentage_file("_haplotypecaler_all_VC.txt", "_haplotypecaller_all_VC_f
 process_percentage_file("_mutect2_all_VC.txt", "_mutect2_all_VC_final.txt")
 
 print("step2 done!")
-
-###============================================================================###
-""""
-##個別細節
-from collections import defaultdict
-
-files = [f for f in os.listdir(path1) if f.endswith("_mutect2_all_VC_final.txt")]
-
-for file in files:
-    patient_id = file.split("_")[0]  
-    input_file = os.path.join(path1, file)
-    output_file = os.path.join(output_folder, f"{patient_id}_mutect2_statistics.txt")
-
-    variant_dict = defaultdict(lambda: defaultdict(str))
-
-    with open(input_file, "r") as f:
-        for line in f:
-            columns = line.strip().split("\t")
-            if len(columns) < 8:
-                continue  
-
-            batch = columns[0]  
-            variant = f"{columns[1]}:{columns[2]}:{columns[4]}:{columns[5]}"  
-            status = columns[-1]  
-
-            if status == "low":
-                status = "-"
-
-            variant_dict[variant][batch] = status
-
-    ranges = [(f"s{i+1}", f"s{i+10}") for i in range(0, 100, 10)] + [("s1", "s100")]
-
-    with open(output_file, "w") as out_f:
-        headers = ["Variant"] + [f"{r[0]}~{r[1]}_{stat}" for r in ranges for stat in ["hem", "het", "-"]]
-        out_f.write("\t".join(headers) + "\n")
-        
-        for variant, batch_data in variant_dict.items():
-            row = [variant]
-            for r_start, r_end in ranges:
-                hem_count = het_count = dash_count = 0
-                for i in range(int(r_start[1:]), int(r_end[1:]) + 1):
-                    batch = f"s{i}"
-                    status = batch_data.get(batch, "-")
-                    if status == "hem":
-                        hem_count += 1
-                    elif status == "het":
-                        het_count += 1
-                    elif status == "-":
-                        dash_count += 1
-                row.extend([str(hem_count), str(het_count), str(dash_count)])
-            out_f.write("\t".join(row) + "\n")
-
-    print(f"DONE {patient_id} output: {output_file}")
-
-print("step3 M2 done!")
-
-
-
-files = [f for f in os.listdir(path1) if f.endswith("_haplotypecaller_all_VC_final.txt")]
-
-for file in files:
-    patient_id = file.split("_")[0] 
-    input_file = os.path.join(path1, file)
-    output_file = os.path.join(output_folder, f"{patient_id}_haplotypecaller_statistics.txt")
-
-    variant_dict = defaultdict(lambda: defaultdict(str))
-
-    with open(input_file, "r") as f:
-        for line in f:
-            columns = line.strip().split("\t")
-            if len(columns) < 8:
-                continue  
-
-            batch = columns[0]  
-            variant = f"{columns[1]}:{columns[2]}:{columns[4]}:{columns[5]}"  
-            status = columns[-1]  
-
-            if status == "low":
-                status = "-"
-
-            variant_dict[variant][batch] = status
-
-    ranges = [(f"s{i+1}", f"s{i+10}") for i in range(0, 100, 10)] + [("s1", "s100")]
-
-    with open(output_file, "w") as out_f:
-        headers = ["Variant"] + [f"{r[0]}~{r[1]}_{stat}" for r in ranges for stat in ["hem", "het", "-"]]
-        out_f.write("\t".join(headers) + "\n")
-        
-        for variant, batch_data in variant_dict.items():
-            row = [variant]
-            for r_start, r_end in ranges:
-                hem_count = het_count = dash_count = 0
-                for i in range(int(r_start[1:]), int(r_end[1:]) + 1):
-                    batch = f"s{i}"
-                    status = batch_data.get(batch, "-")
-                    if status == "hem":
-                        hem_count += 1
-                    elif status == "het":
-                        het_count += 1
-                    elif status == "-":
-                        dash_count += 1
-                row.extend([str(hem_count), str(het_count), str(dash_count)])
-            out_f.write("\t".join(row) + "\n")
-
-    print(f"DONE {patient_id} output: {output_file}")
-
-print("steo3 Haplotypecaller done!")
-"""
