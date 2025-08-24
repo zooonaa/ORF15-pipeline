@@ -27,7 +27,7 @@ depth='100000'
 # if you're using single-end reads, you can this step
 
 mkdir -p ${fastq_raw_a}
-mv *.gz ${fastq_raw_a}
+mv fastq/*.gz ${fastq_raw_a}
 mkdir -p ${fastq_trim_b}
 mkdir -p ${fastq_trim_c}
 mkdir -p ${fastq_trim_d} 
