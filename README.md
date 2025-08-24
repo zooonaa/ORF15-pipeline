@@ -4,7 +4,7 @@ NGS data analysis focused on RPGR-ORF15
 
 ## Introduction
 
-Variants in **RPGR** are the leading cause of X-linked retinitis pigmentosa (XLRP). Most pathogenic variants occur in the **ORF15 exon**, a purine-rich, low-complexity region prone to sequencing and alignment errors, complicating accurate variant interpretation. Standard short-read methods such as **WES** and **WGS** often fail to provide sufficient coverage, resulting in unreliable calls or false negatives.
+Variants in **RPGR** are the leading cause of X-linked retinitis pigmentosa (XLRP). Most pathogenic variants occur in the **ORF15 region**, a purine-rich, low-complexity region prone to sequencing and alignment errors, complicating accurate variant interpretation. Standard short-read methods such as **WES** and **WGS** often fail to provide sufficient coverage, resulting in unreliable calls or false negatives.
 
 To address this challenge, we developed a refined workflow combining **long-range PCR (LR-PCR)** with optimized bioinformatics. The pipeline applies stringent quality control, alignment filtering, and consensus variant calling, ensuring higher specificity and improved detection of **RPGR-ORF15 variants** for both research and clinical diagnostics.
 
@@ -65,5 +65,37 @@ python3 VCF_processing.py
 # Step 5: Final consensus calling
 python3 variant_voting.py
 ```
+
+#### Example of one main script sh_all.py generated:
+
+Sample name = HRD166
+Batch = 1 (1 in 100 batch)
+
+```bash
+#!/usr/bin/sh
+###! You may add the inquiry? the HPC cluster needed in sh_all.py script.
+
+/path/to/BWA/BWA_v0.7.17/bwa mem -t 16 -T 100 -R '@RG\tID:HRD166_PCR_bwamem\tLB:HRD166_PCR_bwamem\tSM:HRD166_PCR_bwamem\tPL:ILLUMINA' /path/to/human_g1k_v37_decoy.fasta /your_ORF15_path/fastq_trimmed/d_single_test100/HRD166-PCR_merge_qc_s1_100000.fastq > /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.sam &&
+
+/path/to/samclip --ref /path/to/human_g1k_v37_decoy.fasta.fai < /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.sam > /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_samclip_.sam &&
+
+java -Xmx80g -jar /path/to/Picard_v2.25.7/picard.jar SortSam INPUT=/your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_samclip_.sam OUTPUT=/your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true &&
+
+/path/to/SAMTOOLS/SAMTOOLS_v1.13/bin/samtools view -h -q 60 -b /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.bam > /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_fq.bam &&
+
+/path/to/SAMTOOLS/SAMTOOLS_v1.13/bin/samtools index /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_fq.bam &&
+
+java -Xmx80g -jar /path/to/Picard_v2.25.7/picard.jar MarkDuplicates INPUT=/your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_fq.bam OUTPUT=/your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.marked.bam METRICS_FILE=/your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_metrics VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true &&
+
+java -Xmx80g -jar /path/to/Picard_v2.25.7/picard.jar SortSam INPUT=/your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.marked.bam OUTPUT=/your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.marked.indexed.bam SORT_ORDER=coordinate VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true &&
+
+java -Xmx80g -jar /path/to/gatk-package-4.2.0.0-local.jar HaplotypeCaller --minimum-mapping-quality 60 -L X:38145300-38145800 -R /path/to/human_g1k_v37_decoy.fasta -I /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.marked.indexed.bam -O /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.haplotype_region.SnpIndel.vcf.gz -bamout /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.haplotype_region.bamout.bam
+
+java -Xmx80g -jar /path/to/gatk-package-4.2.0.0-local.jar Mutect2 --minimum-mapping-quality 60 -L X:38145300-38145800 -R /path/to/human_g1k_v37_decoy.fasta -I /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.marked.indexed.bam -O /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.Mutect2_region.vcf.gz -bamout /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.Mutect2_region.bamout.bam
+
+rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.sam
+rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_samclip_.sam
+rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem.bam
+rm /your_ORF15_path/run/HRD166/s1/HRD166_PCR_bwamem_fq.bam
 
 Author: Chien-Yu, Lin
