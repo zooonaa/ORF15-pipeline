@@ -22,9 +22,7 @@ depth='100000'
 
 ## fastq ###
 
-# put all fastq files together in ${fastq_raw_a}
-# for each sample, merge the R1 and R2 fastq files into a single file
-# if you're using single-end reads, you can this step
+# put all fastq files together in ${SCRIPT_DIR}/fastq
 
 mkdir -p ${fastq_raw_a}
 mv fastq/*.gz ${fastq_raw_a}
