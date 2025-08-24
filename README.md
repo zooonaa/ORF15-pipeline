@@ -24,7 +24,18 @@ Tools and reference used:
 - Python (custom script) - v3.10  
 - Reference genome - hg19
 
-### 2. File Structure
+#### Scripts & files
+
+- ORF15_merged_fastq.sh: A bash script processing all fastq.gz files. Included QC, merged paired-end data, down-sampling, generated 100 batches fastq file.
+- sh_all.py: A python script generated shell scripts and will directly submitted(sbatch) to HPC cluster. 
+- vcf_1.py: A python script 
+- VCF_processing.py
+- variant_voting.py
+  
+- config.json: Please set your tool paths here
+- list.txt: List of sample names to be analyzed (each per line) 
+
+### 2. Overall File Structure
 
 ```plaintext
 your_ORF15_path/
@@ -37,15 +48,49 @@ your_ORF15_path/
   config.json
   list.txt              # list of ${sample_name}
 
-  fastq/                # input FASTQ files
+  fastq/                # input FASTQ files here: *fastq.gz file under fastq/ is required. ensure all FASTQ files follow naming format: **${sample_name}-PCR_R1.fastq.gz** & **${sample_name}-PCR_R2.fastq.gz**
+    a_rawdata/
+      ${sample_name}-PCR_R1.fastq.gz
+      ${sample_name}-PCR_R2.fastq.gz
+    b_merge/
+      ${sample_name}-PCR_merge.fastq.gz
+    c_trim_single/
+      ${sample_name}-PCR_merge_qc.fastq.gz
+    d_single_test100/
+      ${sample_name}-PCR_merge_qc_s1_100000.fastq
+      ${sample_name}-PCR_merge_qc_s2_100000.fastq
+      ${sample_name}-PCR_merge_qc_s3_100000.fastq
+      ...
+      ${sample_name}-PCR_merge_qc_s100_100000.fastq
+
   run/                  # auto-generated folder for all analysis outputs
+    ${sample_name}_haplotypecaler_all_VC.txt
+    ${sample_name}_haplotypecaller_all_VC_final.txt
+    ${sample_name}_mutect2_all_VC.txt
+    ${sample_name}_mutect2_all_VC_final.txt
+    ${sample_name}_haplotypecaller_all_variant.txt
+    ${sample_name}_mutect2_all_variant.txt
+    HC_summary_matrix_from_variant_txt.xlsx
+    M2_summary_matrix_from_variant_txt.xlsx
+    ${sample_name}/
+      ${sample_name}_s1.sh
+      ${sample_name}_s2.sh
+      ${sample_name}_s3.sh
+      ...
+      ${sample_name}_s100.sh
+      s1/
+      s2/
+      s3/
+      ..
+      s100/
 ```
 
-### 3. Configuration & Input
+### 3. 
 
-- **config.json** → set tool paths here  
-- **list.txt** → list of sample names (one per line)  
-- **fastq/** → ensure all FASTQ files follow naming format: **${sample_name}-PCR_R1.fastq.gz** & **${sample_name}-PCR_R2.fastq.gz**
+
+- **fastq/** → ensure all FASTQ files follow naming format: **${sample_name}-PCR_R1.fastq.gz** & **${sample_name}-PCR_R2.fastq.gz** and was
+
+
 
 ### 4. Usage
 
@@ -54,7 +99,7 @@ your_ORF15_path/
 sh ORF15_merged_fastq.sh 
 
 # Step 2: Main analysis pipeline
-python3 sh_all.py      # Scripts will automatically be submitted (sbatch) to the HPC cluster for execution
+python3 sh_all.py
 
 # Step 3: Process VCF file
 python3 vcf_1.py 
