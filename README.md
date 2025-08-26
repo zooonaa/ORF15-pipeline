@@ -30,7 +30,7 @@ Tools and reference used:
 - sh_all.py: A python script generated shell scripts and will directly submitted(sbatch) the job to HPC cluster. 
 - vcf_1.py: A python script 
 - VCF_processing.py
-- variant_voting.py
+- variant_voting.py: Voting for the final variant decision.
   
 - config.json: Please set your tool paths here
 - list.txt: List of sample names to be analyzed (each per line) 
@@ -74,6 +74,7 @@ python3 VCF_processing.py
 # Step 5: Final consensus calling
 python3 variant_voting.py
 ```
+5. The final decision will be in **your_ORF15_path/HC_summary_matrix_from_variant_txt.xlsx and M2_summary_matrix_from_variant_txt.xlsx**
 
 #### Example of one main script sh_all.py generated:
 
