@@ -27,7 +27,7 @@ Tools and reference used:
 #### Scripts & files
 
 - ORF15_merged_fastq.sh: A bash script processing all fastq.gz files. Included QC, merged paired-end data, down-sampling, generated 100 batches fastq file.
-- sh_all.py: A python script generated shell scripts and will directly submitted(sbatch) to HPC cluster. 
+- sh_all.py: A python script generated shell scripts and will directly submitted(sbatch) the job to HPC cluster. 
 - vcf_1.py: A python script 
 - VCF_processing.py
 - variant_voting.py
@@ -39,7 +39,6 @@ Tools and reference used:
 
 ```plaintext
 your_ORF15_path/
-
   ORF15_merged_fastq.sh
   sh_all.py
   variant_voting.py
@@ -49,51 +48,16 @@ your_ORF15_path/
   list.txt              # list of ${sample_name}
 
   fastq/                # input FASTQ files here: *fastq.gz file under fastq/ is required. ensure all FASTQ files follow naming format: **${sample_name}-PCR_R1.fastq.gz** & **${sample_name}-PCR_R2.fastq.gz**
-    a_rawdata/
-      ${sample_name}-PCR_R1.fastq.gz
-      ${sample_name}-PCR_R2.fastq.gz
-    b_merge/
-      ${sample_name}-PCR_merge.fastq.gz
-    c_trim_single/
-      ${sample_name}-PCR_merge_qc.fastq.gz
-    d_single_test100/
-      ${sample_name}-PCR_merge_qc_s1_100000.fastq
-      ${sample_name}-PCR_merge_qc_s2_100000.fastq
-      ${sample_name}-PCR_merge_qc_s3_100000.fastq
-      ...
-      ${sample_name}-PCR_merge_qc_s100_100000.fastq
-
   run/                  # auto-generated folder for all analysis outputs
-    ${sample_name}_haplotypecaler_all_VC.txt
-    ${sample_name}_haplotypecaller_all_VC_final.txt
-    ${sample_name}_mutect2_all_VC.txt
-    ${sample_name}_mutect2_all_VC_final.txt
-    ${sample_name}_haplotypecaller_all_variant.txt
-    ${sample_name}_mutect2_all_variant.txt
-    HC_summary_matrix_from_variant_txt.xlsx
-    M2_summary_matrix_from_variant_txt.xlsx
-    ${sample_name}/
-      ${sample_name}_s1.sh
-      ${sample_name}_s2.sh
-      ${sample_name}_s3.sh
-      ...
-      ${sample_name}_s100.sh
-      s1/
-      s2/
-      s3/
-      ..
-      s100/
 ```
 
-### 3. 
+### 3. Usage
 
+1. Put all scripts under your_ORF15_path/
+2. Ensure all FASTQ files follow naming format: **${sample_name}-PCR_R1.fastq.gz** & **${sample_name}-PCR_R2.fastq.gz** and put in the your_ORF15_path/fastq/ folder
+3. Make sure config.json and list.txt is filled with correct information
 
-- **fastq/** → ensure all FASTQ files follow naming format: **${sample_name}-PCR_R1.fastq.gz** & **${sample_name}-PCR_R2.fastq.gz** and was
-
-
-
-### 4. Usage
-
+4.
 ```bash
 # Step 1: Process FASTQ reads
 sh ORF15_merged_fastq.sh 
