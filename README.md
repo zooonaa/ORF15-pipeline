@@ -28,9 +28,9 @@ Tools and reference used:
 
 - ORF15_merged_fastq.sh: A bash script processing all fastq.gz files. Included QC, merged paired-end data, down-sampling, generated 100 batches fastq file.
 - sh_all.py: A python script generated shell scripts and will directly submitted(sbatch) the job to HPC cluster. 
-- vcf_1.py: A python script 
-- VCF_processing.py
-- variant_voting.py: Voting for the final variant decision.
+- vcf_1.py: Processes VCF outputs across multiple batches, merges and annotates variant calls (hetero, homo, hemi), calculates allele percentages, and generates per-sample summary statistics.
+- VCF_processing.py: Parses variant call files (one per sample), classifies zygosity, summarizes counts per variant, and outputs simplified variant tables.
+- variant_voting.py: Aggregates variant summary tables across samples, filters and voting supported variants, and generates cross-sample result matrices in Excel format.
   
 - config.json: Please set your tool paths here
 - list.txt: List of sample names to be analyzed (each per line) 
